@@ -1,0 +1,104 @@
+---
+title: ""
+format:
+  pdf:
+    documentclass: extarticle
+    fontsize: 11pt
+    mainfont: "Noto Sans"
+    pdf-engine: xelatex
+    geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+    df-print: kable
+    include-in-header:
+      text: |
+        \usepackage{wrapfig}
+        \usepackage{lipsum}
+        \usepackage{xcolor}
+        \usepackage{afterpage}
+        \usepackage{pdfpages}
+        \usepackage{fdsymbol}
+        \usepackage{tikz}
+        \usepackage{mathtools}
+        \usepackage{paracol}
+---
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+\begin{wrapfigure}[0]{R}[0pt]{3.9cm}
+  
+    \includegraphics[width=0.25\textwidth]{uofc2.png}
+\end{wrapfigure}
+
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+            
+## \texorpdfstring{\fontsize{20pt}{24pt}\selectfont\textcolor[HTML]{e30c00}{STATISTICS 321: }\textcolor[HTML]{ffcc00}{Introduction to Probability}}{STATISTICS 321: Does Order Matter?}
+
+            
+
+
+## \texorpdfstring{\fontsize{15pt}{17pt}\selectfont\textcolor[HTML]{e30c00}{\textcopyright~Scott Robison 2025, }\textcolor[HTML]{ffcc00}{all rights reserved.}}{© Scott Robison 2025, all rights reserved.}
+
+Example 3.1: Suppose that we have 20 girls and 10 boys who have applied for a scholarship. We will also use the same list of applicants to represent the school at a conference.
+
+(a)	How many ways can we pick 2 people if by random?
+
+
+$$\\[1in]$$
+
+
+(b)	How many ways can we select 2 people to represent the group at a conference, and one person to be backup in case one of the selected is unable to attend the conference?
+
+
+
+$$\\[1in]$$
+
+(c)	How many ways can we pick 2 people where 1 is a girl and 1 is a boy? 
+
+
+
+$$\\[1in]$$
+
+(d)	How many ways can we select 5 people to represent the group at a conference (3 girls and 2 boys), and one person to be backup in case one of the selected is unable to attend the conference?
+
+$$\\[1in]$$
+
+
+Example 3.2: Does a monkey have a better chance of rearranging i) ACCLLUUS to spell calculus (event A) or ii)AABEGLR to spell algebra (event B)?
+
+$$\\[2in]$$
+Example 3.3: A labor dispute has arisen concerning the distribution of 20 laborers to four different construction jobs. The ﬁrst job (considered to be very undesirable) required 6 laborers; the second, third, and fourth utilized 4, 5, and 5 laborers, respectively. The dispute arose over an alleged random distribution of the laborers to the jobs that placed all 4 members of a particular ethnic group on job 1. In considering whether the assignment represented injustice, a mediation panel desired the probability of the observed event. Determine the number of sample points in the sample space S for this experiment.
+
+That is, determine the number of ways the 20 laborers can be divided into groups of the appropriate sizes to ﬁll all of the jobs. Find the probability of the observed event if it is assumed that the laborers are randomly assigned to jobs.
+
+\newpage
+
+
+Example 3.4: A fleet of nine taxicabs must be dispatched to 3 Airports with the following distributions:  
+
+(a) number of ways the Taxis could distribute themselves to any of the Airports they choose
+
+$$\\[1.5in]$$
+
+(b)	How many possible options if: Airport 1 will need 3 Taxis, Airport 2 => 5, Airport 3 => 1
+
+$$\\[1.5in]$$
+
+(c)	If cabs and numbered 1 through 9 what is the probability that all odd numbered cabs are sent to airport 2? (Call this event B)
+
+$$\\[1.5in]$$
+
+
+(d)	Airport 1 will need 2 Taxis, Airport 2 => 3, Airport 3 => 1. The remaining three can randomly choose which Airport they will go to. 
+
+\newpage
+
+Example 3.5: Yahtzee
+
+\newpage
+
+Example 3.6: Poker
+\newpage

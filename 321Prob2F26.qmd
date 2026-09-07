@@ -1,0 +1,191 @@
+---
+title: ""
+format:
+  pdf:
+    documentclass: extarticle
+    fontsize: 11pt
+    mainfont: "Noto Sans"
+    pdf-engine: xelatex
+    geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+    md-extensions: +fenced_divs+attributes
+    include-in-header:
+      text: |
+        \usepackage{wrapfig}
+        \usepackage{lipsum}
+        \usepackage{xcolor}
+        \usepackage{afterpage}
+        \usepackage{pdfpages}
+        \usepackage{fdsymbol}
+        \usepackage{tikz}
+        \usepackage{mathtools}
+        \usepackage{paracol}
+df-print: kable
+---
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+\begin{wrapfigure}[0]{R}[0pt]{3.9cm}
+  
+    \includegraphics[width=0.25\textwidth]{uofc2.png}
+\end{wrapfigure}
+
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+            
+## \texorpdfstring{\fontsize{20pt}{24pt}\selectfont\textcolor[HTML]{e30c00}{STATISTICS 321: }\textcolor[HTML]{ffcc00}{Introduction to Probability}}{STATISTICS 321: Introduction to Probability 2}
+
+            
+
+
+## \texorpdfstring{\fontsize{15pt}{17pt}\selectfont\textcolor[HTML]{e30c00}{\textcopyright~Scott Robison 2026, }\textcolor[HTML]{ffcc00}{all rights reserved.}}{© Scott Robison 2025, all rights reserved.}
+
+Example 2.1: Scott and Jim take turns flipping a coin. Whoever "flips" a head first wins. Is there an advantage to going first?
+$$\\[3in]$$
+
+Example 2.2: Consider a lock with four spinners. The first lists only consonant letters, then a single digit integer, a spinner with only vowels, and finally another spinner with again only consonants. How many possible combinations does this lock have?
+
+$$\\[3in]$$
+\newpage
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| results_fontsize: '11pt'
+library(probs)
+
+# spinner alphabets
+consonants <- setdiff(LETTERS, c("A","E","I","O","U"))  # 21 consonants
+digits     <- as.character(0:9)                        # 10 digits
+vowels     <- c("A","E","I","O","U")                   # 5 vowels
+
+# Cartesian product of the 4 spinners (base R)
+lock <- expand.grid(S1 = consonants,
+                    S2 = digits,
+                    S3 = vowels,
+                    S4 = consonants,
+                    stringsAsFactors = FALSE)
+
+# number of combinations
+ncomb <- nrow(lock)
+ncomb
+
+# (optional) make it a probs probability space (equally-likely model)
+lock_space <- probspace(lock)   # adds column 'probs' that sum to 1
+
+# (optional) make a single-code string and sample a few codes
+lock$code = paste0(lock$S1, lock$S2, lock$S3, lock$S4)
+
+#sample(lock$code, 8)
+
+```
+
+Example 2.3: Consider a 5 digit number from 00000 to 99999. What is the probability the number selected is at least as large as 60000, has a "7" as the 3rd digit, and is even?
+
+$$\\[3in]$$
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| results_fontsize: '11pt'
+library(probs)
+
+# Sample space: all 5-digit numbers as strings with leading zeros
+nums <- sprintf("%05d", 0:99999)
+
+# Build a probability space (equally likely outcomes)
+space <- probspace(data.frame(num = nums))
+
+# Conditions:
+cond1 <- as.integer(space$num) >= 60000
+cond2 <- substr(space$num, 3, 3) == "7"
+cond3 <- substr(space$num, 5, 5) %in% c("0","2","4","6","8")
+
+# Combine conditions
+event <- cond1 & cond2 & cond3
+
+# Probability
+prob_event <- Prob(space[event, ])#“Give me all rows of space where the corresponding 
+#entry in event is TRUE, and give me all columns 
+#(that’s why there’s a comma but nothing after it).”
+prob_event
+```
+
+Example 2.4: Probability of drawing 3 spades in a row?
+
+$$\\[3in]$$
+\newpage
+
+Example 2.5: A company has 30 employees. 3 different people will be selected for a weekly draw to win: \$100, \$50, or \$25. If a couple both work for this company what is the probability that they will win?
+
+$$\\[3in]$$
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| results_fontsize: '9pt'
+
+library(probs)
+
+# Employees labeled 1 to 30
+employees <- 1:30
+
+# Ordered selections of 3 without replacement (since prizes are different)
+space <- urnsamples(employees, size = 3, replace = FALSE, ordered = TRUE)
+space = probspace(space)
+
+# Define the couple (say employees 1 and 2)
+couple <- c(1, 2)
+
+# Event 1: both members of the couple win
+event_both <- apply(space, 1, function(draw) all(couple %in% draw))
+
+# Event 2: at least one member of the couple wins
+event_any <- apply(space, 1, function(draw) any(couple %in% draw))
+# Probabilities using probs
+prob_both <- Prob(space[event_both, ])
+prob_any  <- Prob(space[event_any, ])
+prob_both  # 1/145 = 0.0068966
+prob_any   # 28/145 = 0.1931034
+```
+
+
+Example 2.6:4 men and 4 women are to be seated in a row of 8 chairs (numbered 1 through 8). How many arrangements are possible? How many arrangements if alternating gender? Probability of at least 2 women sitting together? 
+
+$$\\[2.9in]$$
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| results_fontsize: '9pt'
+library(probs)
+men <- paste0("M", 1:4)
+women <- paste0("W", 1:4)
+people <- c(men, women)
+# Generate outcome space using urnsamples
+space <- urnsamples(people, size = 8, replace = FALSE, ordered = TRUE)
+# space is now a data frame of all 8! = 40320 arrangements
+alternating_event <- apply(space, 1, function(row) {
+  # pattern 1: M W M W ...
+  pattern1 <- all(row[c(1,3,5,7)] %in% men & row[c(2,4,6,8)] %in% women)
+  # pattern 2: W M W M ...
+  pattern2 <- all(row[c(1,3,5,7)] %in% women & row[c(2,4,6,8)] %in% men)
+  pattern1 | pattern2
+})
+alternating_arrangements <- sum(alternating_event)
+alternating_arrangements  # 1152
+# complement: no two women together
+no_two_together_event <- apply(space, 1, function(row) {
+  pos_w <- which(row %in% women)
+  all(diff(pos_w) >= 2)
+})
+prob_at_least_two <- 1 - sum(no_two_together_event) / nrow(space)
+prob_at_least_two  # 13/14 = 0.9285714
+```
